@@ -1,0 +1,19 @@
+.conatiner {
+    width: 768px;
+    margin: auto;
+}
+
+.theme {
+    padding: 2em;
+    background-color: #eee;
+}
+
+.theme--dark {
+    background: darkcyan;
+    color: #efefef;
+}
+
+.theme--light {
+    background: lightblue;
+    color: #333;
+}
