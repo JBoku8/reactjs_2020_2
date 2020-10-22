@@ -1,15 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import PropTypes from "prop-types";
 import Input from "../../presentation/Input/Input";
 import Form from "../../presentation/Form/Form";
 import Button from "../../presentation/Input/Button";
 
-import { login, setToken, getToken, removeToken } from "../../../service/auth";
-import { LoginInputs } from "../../../constants";
+import LocaleContext from "../../../context/LocaleContext";
+
+import {
+  login,
+  setToken,
+  getToken,
+  removeToken,
+  loginAxios,
+} from "../../../service/auth";
+import { LoginInputs, RegisterInputs } from "../../../constants";
+import translations from "../../../locale";
 
 import styles from "./LoginForm.module.css";
 
-function LoginForm(props) {
+function LoginForm({ showRegistration }) {
   const [isAuth, setIsAuth] = useState(false);
+
+  const { locale } = useContext(LocaleContext);
+  const [translate, setTranslate] = useState(translations[locale]);
+
+  useEffect(() => {
+    setTranslate(translations[locale]);
+  }, [locale]);
 
   useEffect(() => {
     if (getToken()) {
@@ -33,6 +50,9 @@ function LoginForm(props) {
       setToken(token);
       setIsAuth(true);
     }
+
+    // const response = await loginAxios(loginData);
+    // console.log(response);
 
     // loginRequest
     //   .then((response) => response.json())
@@ -77,9 +97,19 @@ function LoginForm(props) {
             <input type="checkbox" value="remember-me" /> Remember me
           </label>
         </div> */}
-      <Button {...LoginInputs.button} />
+      <Button {...LoginInputs.button} text={translate.login.LoginBtnText} />
+      <hr />
+      <Button
+        {...RegisterInputs.button}
+        onClick={showRegistration}
+        text={translate.login.RegisterBtnText}
+      />
     </Form>
   );
 }
+
+LoginForm.propTypes = {
+  showRegistration: PropTypes.func,
+};
 
 export default LoginForm;

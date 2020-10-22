@@ -1,4 +1,7 @@
+import axios from "axios";
 import { BASE_API_URL, USER_TOKEN_KEY } from "../constants";
+
+axios.defaults.baseURL = BASE_API_URL;
 
 export const login = async (requestData) => {
   try {
@@ -12,6 +15,15 @@ export const login = async (requestData) => {
 
     const response = await request.json();
     return response;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const loginAxios = async (requestData) => {
+  try {
+    const result = await axios.post("login", requestData);
+    return result["data"];
   } catch (err) {
     console.log(err);
   }
