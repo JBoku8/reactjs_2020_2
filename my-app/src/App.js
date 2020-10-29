@@ -1,20 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import LoginForm from "./components/container/Login/LoginForm";
-import Registration from "./components/container/Registration/Registration";
-
-import Nav from "./components/presentation/Nav/Nav.jsx";
+import Main from "./components/container/Main/Main";
 
 import LocaleContext from "./context/LocaleContext";
+import AuthContext from "./context/AuthContext";
 
 import "./App.css";
 
 function App() {
-  const [showLogin, setShowLogin] = useState(true);
-
   const defaultLocaleValue = useContext(LocaleContext);
+  const defaultAuthValue = useContext(AuthContext);
 
   const [locale, setLocale] = useState(defaultLocaleValue);
+  const [authed, setAuth] = useState(defaultAuthValue);
 
   const initialContext = {
     locale,
@@ -24,23 +22,26 @@ function App() {
     },
   };
 
+  const initialAuthContext = {
+    authed,
+    login() {
+      setAuth(true);
+    },
+    logout() {
+      // setTimeout(() => {`
+      setAuth(false);
+      // }, 2000);
+    },
+  };
+
   // oldObject === newObject
 
   return (
     <div className="conatiner">
       <LocaleContext.Provider value={initialContext}>
-        <Nav />
-        <hr />
-        {showLogin && (
-          <LoginForm showRegistration={() => setShowLogin(false)} />
-        )}
-        {!showLogin && (
-          <Registration
-            showLoginForm={() => {
-              setShowLogin(true);
-            }}
-          />
-        )}
+        <AuthContext.Provider value={initialAuthContext}>
+          <Main />
+        </AuthContext.Provider>
       </LocaleContext.Provider>
     </div>
   );

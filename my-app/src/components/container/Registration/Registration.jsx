@@ -8,6 +8,7 @@ import Button from "../../presentation/Input/Button";
 import LocaleContext from "../../../context/LocaleContext";
 
 import { RegisterInputs, LoginInputs } from "../../../constants";
+import { Link } from "react-router-dom";
 
 function Registration({ showLoginForm }) {
   const locale = useContext(LocaleContext);
@@ -24,7 +25,10 @@ function Registration({ showLoginForm }) {
           </div> */}
       <Button {...RegisterInputs.button} />
       <hr />
-      <Button {...LoginInputs.button} onClick={showLoginForm} />
+
+      <Link className={LoginInputs.button.className} to="/login">
+        {LoginInputs.button.text}
+      </Link>
     </Form>
   );
 }

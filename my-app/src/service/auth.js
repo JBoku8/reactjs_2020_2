@@ -5,7 +5,7 @@ axios.defaults.baseURL = BASE_API_URL;
 
 export const login = async (requestData) => {
   try {
-    const request = await fetch(`${BASE_API_URL}/api/login`, {
+    const request = await fetch(`${BASE_API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

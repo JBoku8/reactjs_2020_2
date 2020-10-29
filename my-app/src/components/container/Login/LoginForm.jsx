@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import Input from "../../presentation/Input/Input";
 import Form from "../../presentation/Form/Form";
 import Button from "../../presentation/Input/Button";
 
 import LocaleContext from "../../../context/LocaleContext";
+import AuthContext from "../../../context/AuthContext";
 
 import {
   login,
@@ -19,22 +21,14 @@ import translations from "../../../locale";
 import styles from "./LoginForm.module.css";
 
 function LoginForm({ showRegistration }) {
-  const [isAuth, setIsAuth] = useState(false);
-
   const { locale } = useContext(LocaleContext);
+  const authContext = useContext(AuthContext);
   const [translate, setTranslate] = useState(translations[locale]);
+  const histroy = useHistory();
 
   useEffect(() => {
     setTranslate(translations[locale]);
   }, [locale]);
-
-  useEffect(() => {
-    if (getToken()) {
-      setIsAuth(true);
-    } else {
-      setIsAuth(false);
-    }
-  }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -48,28 +42,20 @@ function LoginForm({ showRegistration }) {
 
     if (token) {
       setToken(token);
-      setIsAuth(true);
+      authContext.login();
+      histroy.push("/profile");
     }
 
     // const response = await loginAxios(loginData);
     // console.log(response);
-
-    // loginRequest
-    //   .then((response) => response.json())
-    //   .then((responseData) => {
-    //     console.log(responseData);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   const onLogOut = (event) => {
     removeToken();
-    setIsAuth(false);
+    authContext.logout();
   };
 
-  if (isAuth) {
+  if (authContext.authed) {
     return (
       <div className="container text-center">
         <h1 className={styles["text-red"]}>Already logged in.</h1>
@@ -99,11 +85,10 @@ function LoginForm({ showRegistration }) {
         </div> */}
       <Button {...LoginInputs.button} text={translate.login.LoginBtnText} />
       <hr />
-      <Button
-        {...RegisterInputs.button}
-        onClick={showRegistration}
-        text={translate.login.RegisterBtnText}
-      />
+
+      <Link className={RegisterInputs.button.className} to="/register">
+        {translate.login.RegisterBtnText}
+      </Link>
     </Form>
   );
 }
