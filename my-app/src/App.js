@@ -7,9 +7,8 @@ import {
   Switch,
 } from "react-router-dom";
 import "./App.css";
-import Contact from "./pages/Contact";
-import Counter from "./pages/Counter";
-import Home from "./pages/Home";
+
+import { routes } from "./routes";
 
 // import Blog from "./pages/Blog";
 const Blog = React.lazy(() => {
@@ -31,20 +30,13 @@ function Nav(props) {
             <NavLink to="/contact">Contact</NavLink>
           </li>
           <li>
+            <NavLink to="/redux-counter">Redux Counter</NavLink>
+          </li>
+          <li>
             <NavLink to="/counter">Counter</NavLink>
           </li>
         </ul>
       </nav>
-    </div>
-  );
-}
-
-function NotFound(props) {
-  return (
-    <div>
-      <h2>Page Not Found</h2>
-      <hr />
-      <Link to="/">Home</Link>
     </div>
   );
 }
@@ -59,15 +51,17 @@ function App() {
       <div className="App">
         <Nav />
         <Switch>
-          <Route path="/" component={Home} exact />
-          <Route path="/contact" component={Contact} />
-          <Route path="/counter" component={Counter} />
+          {routes.map((route) => {
+            return (
+              <Route path={route.path} exact={route.exact} key={route.path}>
+                {<route.component />}
+              </Route>
+            );
+          })}
 
-          <Suspense fallback={<Spinner name="Blog" />}>
+          {/* <Suspense fallback={<Spinner name="Blog" />}>
             <Route path="/blog" component={Blog} />
-          </Suspense>
-
-          <Route path="*" component={NotFound} />
+          </Suspense> */}
         </Switch>
       </div>
     </Router>

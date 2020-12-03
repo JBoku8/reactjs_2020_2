@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
 import {
-  ACTION_RESET,
+  createActionReset,
   createAddAction,
   createMinusAction,
   createAddNumberAction,
@@ -22,7 +22,7 @@ function Counter(props) {
       <button onClick={() => dispatch(createAddAction())}>+</button>
       <button onClick={() => dispatch(createAddNumberAction(5))}>+5</button>
       <button onClick={() => dispatch(createAddNumberAction(10))}>+10</button>
-      <button onClick={() => dispatch({ type: ACTION_RESET })}>Reset</button>
+      <button onClick={() => dispatch(createActionReset())}>Reset</button>
       <button onClick={() => dispatch(createMinusAction())}>-</button>
       <button onClick={() => dispatch(createMinusNumberAction(5))}>-5</button>
       <button onClick={() => dispatch(createMinusNumberAction(10))}>-10</button>
